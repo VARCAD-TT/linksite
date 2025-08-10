@@ -1,350 +1,126 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Моя визитка</title>
-
-<!-- Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-<!-- Font Awesome -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Мои ссылки</title>
 <style>
-  /* ----------------- БАЗА ----------------- */
-  :root{
-    --accent1: #6a11cb;
-    --accent2: #2575fc;
-    --accent3: #ff6f91;
-    --accent4: #ff9671;
-    --text: #ffffff;
-    --glass: rgba(255,255,255,0.14);
-  }
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        color: white;
+        overflow-x: hidden;
+        background: linear-gradient(-45deg, #ff6b6b, #f8e473, #6bc5ff, #d96bff);
+        background-size: 400% 400%;
+        animation: gradient 6s ease infinite;
+    }
 
-  html,body{
-    height:100%;
-    margin:0;
-    padding:0;
-    font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
-    color:var(--text);
-    /* фиксируем прокрутку (по твоей просьбе) */
-    overflow: hidden;
-    background-color: #111; /* на случай, если анимация фона не работает */
-  }
+    @keyframes gradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
 
-  /* ----------------- ФОН: многослойный анимированный градиент + световые пятна ----------------- */
-  body::before{
-    /* базовый плавный линейный градиент (анимируется через background-position) */
-    content:"";
-    position:fixed;
-    inset:0;
-    z-index:0;
-    background:
-      linear-gradient(120deg, var(--accent1) 0%, var(--accent2) 40%, var(--accent3) 70%, var(--accent4) 100%);
-    background-size: 200% 200%;
-    animation: bgShift 14s linear infinite;
-    filter: saturate(1.05);
-  }
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 20px;
+        min-height: 100vh;
+        box-sizing: border-box;
+    }
 
-  body::after{
-    /* мягкие световые пятна для глубины (радикальные градиенты) */
-    content:"";
-    position:fixed;
-    inset:0;
-    z-index:0;
-    pointer-events:none;
-    background:
-      radial-gradient(25vw 25vw at 10% 20%, rgba(255,255,255,0.06), rgba(255,255,255,0) 30%),
-      radial-gradient(18vw 18vw at 85% 80%, rgba(0,0,0,0.06), rgba(0,0,0,0) 30%),
-      radial-gradient(12vw 12vw at 75% 25%, rgba(255,255,255,0.03), rgba(255,255,255,0) 30%);
-    animation: spotsMove 12s ease-in-out infinite;
-    mix-blend-mode: overlay;
-  }
+    h1 {
+        margin-bottom: 40px;
+        font-size: 2.5em;
+        animation: fadeInDown 1s ease forwards;
+    }
 
-  @keyframes bgShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-  @keyframes spotsMove {
-    0% { transform: translateY(0px) scale(1); opacity:0.95; }
-    50% { transform: translateY(-18px) scale(1.02); opacity:1; }
-    100% { transform: translateY(0px) scale(1); opacity:0.95; }
-  }
+    @keyframes fadeInDown {
+        from { opacity: 0; transform: translateY(-30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
 
-  /* ----------------- КОНТЕЙНЕР (растягивается на весь экран) ----------------- */
-  .wrap{
-    position:relative;
-    z-index:1; /* поверх фоновых слоёв */
-    box-sizing:border-box;
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between; /* аватар сверху, кнопки центр, волна внизу */
-    align-items:center;
-    padding:20px 20px 0 20px;
-  }
+    .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+        text-decoration: none;
+        padding: 15px 25px;
+        border-radius: 50px;
+        margin: 10px 0;
+        font-size: 1.2em;
+        width: 90%;
+        max-width: 350px;
+        transition: transform 0.3s ease, background 0.3s ease;
+        animation: fadeInUp 1s ease forwards;
+    }
 
-  /* ----------------- ВЕРХ (аватар + небольшой текст) ----------------- */
-  .top {
-    width:100%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding-top:20px;
-    padding-bottom:6px;
-  }
+    .btn:hover {
+        transform: translateY(-5px) scale(1.05);
+        background: rgba(255, 255, 255, 0.25);
+    }
 
-  .avatar {
-    width:104px;
-    height:104px;
-    border-radius:50%;
-    overflow:hidden;
-    box-shadow: 0 8px 30px rgba(2,6,23,0.45), 0 4px 12px rgba(255,255,255,0.06);
-    border: 2px solid rgba(255,255,255,0.06);
-    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.02));
-    display:inline-block;
-    transform-origin:center;
-    animation: avatarFloat 6s ease-in-out infinite;
-  }
-  .avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .btn.main {
+        background: linear-gradient(90deg, #ff9a9e, #fad0c4);
+        animation: pulse 2s infinite, fadeInUp 1s ease forwards;
+    }
 
-  @keyframes avatarFloat {
-    0% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
-    100% { transform: translateY(0); }
-  }
+    @keyframes pulse {
+        0%, 100% { box-shadow: 0 0 10px rgba(255,255,255,0.7); }
+        50% { box-shadow: 0 0 25px rgba(255,255,255,1); }
+    }
 
-  /* ----------------- Основной блок с заголовком и кнопками ----------------- */
-  .center {
-    width:100%;
-    max-width:420px;
-    display:flex;
-    flex-direction:column;
-    align-items:stretch;
-    gap:8px;
-    padding: 10px 6px;
-    box-sizing:border-box;
-    flex: 1 0 auto;
-    justify-content: center;
-  }
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
 
-  h1 {
-    margin: 8px 0 6px;
-    font-size:28px;
-    font-weight:700;
-    text-align:center;
-    line-height:1.02;
-    letter-spacing:0.2px;
-    color:var(--text);
-    text-shadow: 0 2px 18px rgba(0,0,0,0.18);
-    animation: fadeUp 650ms ease both;
-  }
+    .wave-container {
+        position: relative;
+        width: 100%;
+        height: 150px;
+        overflow: hidden;
+    }
 
-  p.lead {
-    margin: 0 0 18px;
-    font-size:15px;
-    text-align:center;
-    color: rgba(255,255,255,0.92);
-    opacity:0.95;
-    animation: fadeUp 800ms ease both;
-  }
+    .wave {
+        position: absolute;
+        width: 200%;
+        height: 100%;
+        background: url('https://svgshare.com/i/13qV.svg');
+        background-size: 50% 100%;
+        animation: waveMove 6s linear infinite;
+        bottom: 0;
+    }
 
-  @keyframes fadeUp {
-    from { opacity:0; transform: translateY(8px); }
-    to   { opacity:1; transform: translateY(0); }
-  }
-
-  /* ----------------- Кнопки (адаптированы под тапы) ----------------- */
-  .buttons {
-    display:flex;
-    flex-direction:column;
-    gap:14px;
-    width:100%;
-    padding: 0 6px 18px;
-    box-sizing:border-box;
-  }
-
-  .btn {
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:14px 18px;
-    border-radius:14px;
-    text-decoration:none;
-    color:var(--text);
-    font-size:16px;
-    font-weight:600;
-    background: var(--glass);
-    box-shadow: 0 14px 30px rgba(6,22,55,0.20);
-    transition: transform 160ms cubic-bezier(.2,.9,.3,1), box-shadow 160ms, background 220ms;
-    -webkit-tap-highlight-color: transparent;
-    min-height:56px;
-    align-items:center;
-  }
-
-  /* Иконка слева — гарантированно видна на мобильных */
-  .btn .ico {
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    width:44px;
-    height:44px;
-    border-radius:10px;
-    background: rgba(255,255,255,0.03);
-    font-size:18px;
-    flex:0 0 44px;
-    box-shadow: inset 0 -6px 18px rgba(0,0,0,0.06);
-    color: rgba(255,255,255,0.98);
-  }
-
-  .btn .label {
-    flex:1;
-    text-align:left;
-  }
-  .btn .label .title { font-size:16px; line-height:1; }
-  .btn .label .subtitle { font-size:12px; color: rgba(255,255,255,0.85); margin-top:3px; font-weight:500; }
-
-  /* Главная кнопка — акцент */
-  .btn-main{
-    background: linear-gradient(90deg, rgba(255,81,47,0.98), rgba(221,36,118,0.98));
-    background-size:200% 200%;
-    animation: mainPulse 4s ease-in-out infinite;
-    box-shadow: 0 18px 40px rgba(221,36,118,0.18), 0 6px 20px rgba(0,0,0,0.18);
-  }
-  @keyframes mainPulse {
-    0% { background-position: 0% 50%; transform: translateY(0); }
-    50% { background-position: 100% 50%; transform: translateY(-2px); }
-    100% { background-position: 0% 50%; transform: translateY(0); }
-  }
-
-  /* Второстепенные - glass effect */
-  .btn-secondary {
-    background: rgba(255,255,255,0.10);
-    backdrop-filter: blur(6px);
-  }
-
-  /* Поведение при тапе: "вдавить" */
-  .btn:active {
-    transform: translateY(2px) scale(0.995);
-    box-shadow: 0 6px 16px rgba(2,6,23,0.28);
-  }
-
-  /* Увеличенный блеск/подсветка при долгом наведении (desktop) */
-  .btn:hover{
-    transform: translateY(-6px);
-    box-shadow: 0 26px 60px rgba(2,6,23,0.28);
-  }
-
-  /* Для маленьких экранов — чуть бОльшие кнопки и текст */
-  @media (max-width:420px){
-    h1 { font-size:26px; }
-    .avatar { width:96px; height:96px; }
-    .btn { padding:16px 18px; border-radius:12px; min-height:60px; font-size:17px; }
-    .btn .ico { width:48px; height:48px; font-size:20px; }
-  }
-
-  /* ----------------- НИЗ: декоративная волна (SVG) ----------------- */
-  .bottom-wave {
-    width:100%;
-    max-width:100%;
-    line-height:0;
-    z-index:1;
-    margin-top: 6px;
-    pointer-events:none;
-    /* небольшой blur, чтобы волна выглядела мягче */
-    filter: drop-shadow(0 -6px 20px rgba(0,0,0,0.08));
-  }
-
-  /* Убираем выделение и пользовательные взаимодействия для декоративных элементов */
-  img, svg { user-select:none; -webkit-user-drag: none; }
-
-  /* ----------------- Удобства (снижение риска прокрутки из-за полосы браузера) ----------------- */
-  main { width:100%; display:block; box-sizing:border-box; }
-
+    @keyframes waveMove {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+    }
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <!-- ВЕРХ -->
-    <div class="top" aria-hidden="false">
-      <!-- Поставь тут свою ссылку на аватар: заменить src -->
-      <div class="avatar" title="Аватар">
-        <img src="https://images.unsplash.com/photo-1541529086526-7f0e4e08b5df?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=a8e2f8f566e6b6f7b0b4d6b7e6c5f1a2" alt="Аватар">
-      </div>
-    </div>
 
-    <!-- ЦЕНТР -->
-    <main class="center" role="main" aria-labelledby="title">
-      <h1 id="title">Добро пожаловать!</h1>
-      <p class="lead">Свяжитесь со мной через удобный мессенджер</p>
+<div class="container">
+    <h1>Мои ссылки</h1>
 
-      <div class="buttons" aria-label="Ссылки">
-        <!-- Telegram (главная кнопка, выделенная) -->
-        <a class="btn btn-main" href="https://t.me/username" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
-          <span class="ico" aria-hidden="true"><i class="fab fa-telegram"></i></span>
-          <span class="label"><span class="title">Telegram</span><span class="subtitle">@username</span></span>
-        </a>
+    <a href="#" class="btn main">
+        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" width="24"> Telegram
+    </a>
+    <a href="#" class="btn">
+        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" width="24"> Instagram
+    </a>
+    <a href="#" class="btn">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" width="24"> Email
+    </a>
+</div>
 
-        <!-- WhatsApp -->
-        <a class="btn btn-secondary" href="https://wa.me/yourphone" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-          <span class="ico" aria-hidden="true"><i class="fab fa-whatsapp"></i></span>
-          <span class="label"><span class="title">WhatsApp</span><span class="subtitle">Написать быстро</span></span>
-        </a>
+<div class="wave-container">
+    <div class="wave"></div>
+</div>
 
-        <!-- Instagram -->
-        <a class="btn btn-secondary" href="https://instagram.com/username" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-          <span class="ico" aria-hidden="true"><i class="fab fa-instagram"></i></span>
-          <span class="label"><span class="title">Instagram</span><span class="subtitle">@username</span></span>
-        </a>
-
-        <!-- Email -->
-        <a class="btn btn-secondary" href="mailto:youremail@example.com" aria-label="Email">
-          <span class="ico" aria-hidden="true"><i class="fas fa-envelope"></i></span>
-          <span class="label"><span class="title">Email</span><span class="subtitle">youremail@example.com</span></span>
-        </a>
-      </div>
-    </main>
-
-    <!-- НИЗ: декоративная SVG-волна -->
-    <div class="bottom-wave" aria-hidden="true">
-      <!-- простая SVG-волна; можно заменить цветовой остановкой под фон или сделать более сложную -->
-      <svg viewBox="0 0 1200 120" preserveAspectRatio="none" style="width:100%; height:84px; display:block;">
-        <defs>
-          <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="rgba(255,255,255,0.04)"/>
-            <stop offset="100%" stop-color="rgba(255,255,255,0.02)"/>
-          </linearGradient>
-        </defs>
-        <path d="M0,40 C150,120 350,0 600,40 C850,80 1050,20 1200,60 L1200,120 L0,120 Z" fill="url(#waveGradient)"></path>
-      </svg>
-    </div>
-
-  </div>
-
-  <script>
-    // Подстановка текущего года (если нужно в будущем)
-    (function(){
-      // пример: document.getElementById('year').textContent = new Date().getFullYear();
-    })();
-
-    // Примитивная оптимизация: если экран по высоте меньше — уменьшаем отступы (без включения прокрутки)
-    (function(){
-      function adaptForHeight(){
-        const h = window.innerHeight;
-        const center = document.querySelector('.center');
-        if(!center) return;
-        if(h < 640){
-          center.style.padding = '6px';
-        } else {
-          center.style.padding = '12px';
-        }
-      }
-      adaptForHeight();
-      window.addEventListener('resize', adaptForHeight);
-    })();
-  </script>
 </body>
 </html>
